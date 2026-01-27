@@ -26,13 +26,19 @@ Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e
 | role | VARCHAR | 20 | Rola użytkownika (np. admin, student). |
 
 Dodatkowe informacje :
-* Klucz główny : Kolumna `uid` jest unikalnym identyfikatorem każdego konta.
-* Obowiązkowe kolumny : Podczas tworzenia nowego konta należy podać wartości pól `email`, `name`, `surname`, `password` oraz `role`.
-* Kolumna `email` : Adres e-mail musi być unikalny.
-* Kolumna `role` : Rola użytkownika musi być wybraną rolą z podanych:
-   * admin - administrator systemu
-   * teacher - nauczyciel
-   * student - uczeń
+* Klucz główny : `uid`
+* Obowiązkowe kolumny :
+   * `email`
+   * `name`
+   * `surname`
+   * `password`
+   * `role`
+* Ograniczenia :
+   * `email` - unikalna wartość
+   * `role` - wartość z listy roli : 
+      * admin - administrator systemu
+      * teacher - nauczyciel
+      * student - uczeń
 
 2. Klasy(classes)
    Tabela przechowująca listę klas.
@@ -44,10 +50,14 @@ Dodatkowe informacje :
 | letter | CHAR | 1 | Litera klasy (np. A, B, D). |
 
 Dodatkowe informacje :
-* Klucz główny : Kolumna `cid` jest unikalnym identyfikatorem klasy.
-* Obowiązkowe kolumny : Podczas wstawiania nowej klasy do tabeli należy podać wartości pól `number` i `letter`.
-* Kolumna `number` : Kolumna zawiera cyfrę z przedziału 0-8.
-* Kolumna `letter` : Kolumna zawiera pojedynczą wielką literę (np. A, B, F).
+* Klucz główny : `cid`
+* Obowiązkowe kolumny : 
+   * `number`
+   * `letter`.
+* Ograniczenia : 
+   * `number` - cyfra z przedziału 0-8
+   * `letter` - wielka litera (np. A, B, D, G)
+   * (`number`, `letter`) - wartość unikalna
 
 3. Uczniowie(students)
    Tabela przechowująca przypisanie uczniów do klas.
@@ -59,10 +69,15 @@ Dodatkowe informacje :
 
 Dodatkowe informacje :
 * Klucze obce :
-   * Kolumna `sid` - Identyfikator konta ucznia (kolumna `uid` w tabeli *users*).
-   * Kolumna `cid` - Identyfikator klasy (kolumna `cid` w tabeli *classes*).
-* Obowiązkowe kolumny : Podczas przypisywania ucznia do klasy należy podać wartości pól `sid` oraz `cid`.
-* Kolumna `sid` : Kolumna musi zawierać identyfikator użytkownika, którego rola to 'student'.
+   * `sid`
+   * `cid`
+* Obowiązkowe kolumny : 
+   * `sid`
+   * `cid`.
+* Ograniczenia : 
+   * `sid` - wartość unikalna
+* Dodatkowe warunki :
+   * `sid` - użytkownik o tym identyfikatorze musi mieć rolę **student**
 
 4. Przedmioty(subjects)
    Tabela przechowująca listę przedmiotów.
@@ -73,8 +88,11 @@ Dodatkowe informacje :
 | name | VARCHAR | 100 | Nazwa przedmiotu. |
 
 Dodatkowe informacje :
-* Klucz główny : Kolumna `sbid` jest unikalnym identyfikatorem przedmiotu.
-* Obowiązkowe kolumny : Podczas dodawania przedmiotu należy podać wartość pola `name`.
+* Klucz główny : `sbid`
+* Obowiązkowe kolumny : 
+   * `name`.
+* Ograniczenia :
+   * `name` - unikalna wartość
 
 5. Plan zajęć(time_table)
    Tabela przechowująca plan zajęć.
@@ -92,13 +110,24 @@ Dodatkowe informacje :
 | moved | BOOLEAN | - | Flaga informująca czy zajęcia zostały przesunięte (np. odbywają się w innym dniu lub o innej godzinie). | 
 
 Dodatkowe informacje : 
-* Klucz główny : Kolumna `ttid` jest unikalnym identyfikatorem zajęć.
-* Obowiązkowe kolumny : Podczas dodawania nowych zajęć należy podać wartości pól `date`, `start_time`, `end_time`, `cid`, `tid` oraz `sbid`.
+* Klucz główny : `ttid`
 * Klucze obce : 
-   * Kolumna `cid` - Identyfikator klasy (kolumna `cid` w tabeli *classes*).
-   * Kolumna `tid` - Identyfikator nauczyciela (kolumna `uid` w tabeli *users*).
-   * Kolumna `sbid` - Identyfikator przedmiotu (kolumna `sbid` w tabeli *subjects*).
-* Kolumna `tid` : Kolumna musi zawierać identyfikator użytkownika, którego rola to 'teacher'.
+   * `cid`
+   * `tid`
+   * `sbid`
+* Obowiązkowe kolumny : 
+   * `date`
+   * `start_time`
+   * `end_time`
+   * `cid`
+   * `tid`
+   * `sbid`
+* Domyślne wartości : 
+   * `canceled` - domyślnie **false**
+   * `moved` - domyślnie **false**
+* Dodatkowe warunki :
+   * (`date`, `start_time`, `end_time`) - klasa nie może mieć w tym czasie innych zajęć
+   * `tid` - użytkownik o tym identyfikatorze musi mieć rolę **teacher**
 
 6. Lekcje(lessons)
 
@@ -110,8 +139,14 @@ Dodatkowe informacje :
 | description | TEXT | - | Opis lekcji. |
 
 Dodatkowe informacje : 
-* Klucz główny : Kolumna `lid` jest unikatowym identyfikatorem lekcji.
-* Obowiązkowe kolumny : Podczas dodawania nowych zajęć należy podać wartości pól `lid`, `ttid` i `topic`.
+* Klucz główny : `lid`
+* Klucze obce : 
+   * `ttid` - Identyfikator zajęć w planie zajęć.
+* Obowiązkowe kolumny : 
+   * `ttid`
+   * `topic`
+* Wartości domyślne :
+   * `description` - domyślnie **NULL**
 
 7. Obecność(attendance)
 
@@ -121,14 +156,64 @@ Dodatkowe informacje :
 | lid | INTEGER | - | Identyfikator lekcji. |
 | status | VARCHAR | 10 | Status obecności (np. present, absent) |
 
+Dodatkowe informacje : 
+* Klucze obce :
+   * `sid`
+   * `lid`
+* Obowiązkowe kolumny : 
+   * `sid`
+   * `lid`
+   * `status`
+* Ograniczenia : 
+   * `status` - wartość z listy statusów obecności : 
+      * present
+      * absent
+      * late
+
+
 8. Oceny(grades)
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
+| gid | INTEGER | - | Identyfikator oceny |
 | sid | INTEGER | - | Identyfikator ucznia |
 | tid | INTEGER | - | Identyfikator nauczyciela, który dodał ocenę. |
-| ocena | VARCHAR | 10 | Ocena (np. bdb, dop, nb, np). |
+| sbid | INTEGER | - | Identyfikator przedmiotu, którego dotyczy ocena. |
+| grade | VARCHAR | 10 | Ocena (np. bdb, dop, nb, np). |
+| title | VARCHAR | 200 | Tytuł oceny. |
+| description | TEXT | - | Opis oceny. |
 | date | DATE | - | Data wystawienia oceny. |
+
+Dodatkowe informacje : 
+* Klucz główny : `gid`
+* Klucze obce : 
+   * `sid`
+   * `tid`
+   * `sbid`
+* Obowiązkowe kolumny :
+   * `sid`
+   * `tid`
+   * `sbid`
+   * `grade`
+   * `title`
+* Wartości domyślne : 
+   * `description` - domyślnie **NULL**
+   * `date` - domyślnie **NOW()**
+* Ograniczenia : 
+   * `grade` - wartość z listy ocen : 
+      * ndst (1)
+      * dop (2)
+      * dst (3)
+      * db (4)
+      * bdb (5)
+      * cel (6)
+      * np (nie przygotowany)
+      * nb (brak oceny np. nieobecny na sprawdzianie)
+      * o (inne)
+* Dodatkowe warunki :
+   * `sid` - użytkownik o tym identyfikatorze musi mieć rolę **student**
+   * `tid` - użytkownik o tym identyfikatorze musi mieć rolę **teacher**
+
 
 9. Sprawdziany(tests)
 
@@ -138,6 +223,16 @@ Dodatkowe informacje :
 | ttid | INTEGER | - | Identyfikator zajęć z planu zajęć. |
 | title | VARCHAR | 200 | Tytuł sprawdzianu. |
 | description | TEXT | - | Opis sprawdzianu. |
+
+Dodatkowe informacje :
+* Klucz główny : `tsid`
+* Klucze obce : 
+   * `ttid`
+* Obowiązkowe kolumny : 
+   * `ttid`
+   * `title`
+* Domyślne wartości :
+   * `description` - domyślnie **NULL**
 
 10. Zadanie domowe(homework)
 
@@ -151,6 +246,23 @@ Dodatkowe informacje :
 | description | TEXT | - | Opis zadania domowego. |
 | date | TEXT | - | Data, określająca termin oddania zadania domowego. |
 
+Dodatkowe informacje :
+* Klucz główny `hid`
+* Klucze obce :
+   * `cid`
+   * `tid`
+   * `sbid`
+* Obowiązkowe kolumny :
+   * `cid`
+   * `tid`
+   * `sbid`
+   * `title`
+* Domyślne wartości : 
+   * `description` - domyślnie **NULL**
+   * `date` - domyślnie **NOW()**
+
+
+
 11. Wiadomości(messages)
 
 | Nazwa kolumny | Typ | Długość | Opis |
@@ -161,3 +273,17 @@ Dodatkowe informacje :
 | title | VARCHAR | 200 | Tytuł wiadomości. |
 | content | TEXT | - | Zawartość wiadomości. |
 | pmid | INTEGER | - | Identyfikator poprzedniej wiadomości. |
+
+Dodatkowe informacje :
+* Klucz główny : `mid`
+* Klucze obce :
+   * `snid`
+   * `rcid`
+   * `pmid`
+* Obowiązkowe kolumny :
+   * `snid`
+   * `rcid`
+   * `title`
+   * `content`
+* Domyślne wartości :
+   * `pmid` - domyślnie **NULL**
