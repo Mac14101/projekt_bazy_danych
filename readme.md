@@ -112,3 +112,52 @@ Dodatkowe informacje :
 Dodatkowe informacje : 
 * Klucz główny : Kolumna `lid` jest unikatowym identyfikatorem lekcji.
 * Obowiązkowe kolumny : Podczas dodawania nowych zajęć należy podać wartości pól `lid`, `ttid` i `topic`.
+
+7. Obecność(attendance)
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| sid | INTEGER | - | Identyfikator ucznia |
+| lid | INTEGER | - | Identyfikator lekcji. |
+| status | VARCHAR | 10 | Status obecności (np. present, absent) |
+
+8. Oceny(grades)
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| sid | INTEGER | - | Identyfikator ucznia |
+| tid | INTEGER | - | Identyfikator nauczyciela, który dodał ocenę. |
+| ocena | VARCHAR | 10 | Ocena (np. bdb, dop, nb, np). |
+| date | DATE | - | Data wystawienia oceny. |
+
+9. Sprawdziany(tests)
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| tsid | INTEGER | - | Identyfikator sprawdzianu |
+| ttid | INTEGER | - | Identyfikator zajęć z planu zajęć. |
+| title | VARCHAR | 200 | Tytuł sprawdzianu. |
+| description | TEXT | - | Opis sprawdzianu. |
+
+10. Zadanie domowe(homework)
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| hid | INTEGER | - | Identyfikator zadania domowego. |
+| cid | INTEGER | - | Identyfikator klasy, której dotyczy zadanie domowe. |
+| tid | INTEGER | - | Identyfikator nauczyciela, który zadał zadanie domowe. |
+| sbid | INTEGER | - | Identyfikator przedmiotu, którego dotyczy zadanie domowe. |
+| title | VARCHAR | 200 | Tytuł zadania domowego. |
+| description | TEXT | - | Opis zadania domowego. |
+| date | TEXT | - | Data, określająca termin oddania zadania domowego. |
+
+11. Wiadomości(messages)
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| mid | INTEGER | - | Identyfikator wiadomości. |
+| snid | INTEGER | - | Identyfikator nadawcy wiadomości. |
+| rcid | INTEGER | - | Identyfikator odbiorcy wiadomości. |
+| title | VARCHAR | 200 | Tytuł wiadomości. |
+| content | TEXT | - | Zawartość wiadomości. |
+| pmid | INTEGER | - | Identyfikator poprzedniej wiadomości. |
