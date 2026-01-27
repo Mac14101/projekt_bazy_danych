@@ -14,7 +14,7 @@ Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e
 ## Tabele w bazie danych
 
 1. Użytkownicy(users)
-   Tabela przechowująca konta użytkowników aplikacji.
+   Tabela przechowująca konta użytkowników aplikacji. Zawiera dane używane do uwierzytelniania, podczas używania aplikacji, oraz dane personalne użytkownika.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -41,7 +41,7 @@ Dodatkowe informacje :
       * student - uczeń
 
 2. Klasy(classes)
-   Tabela przechowująca listę klas.
+   Tabela przechowująca listę klas. Może istnieć maksymalnie jedna klasa o wybranym numerze i literze (np. 1A).
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -60,7 +60,7 @@ Dodatkowe informacje :
    * (`number`, `letter`) - wartość unikalna
 
 3. Uczniowie(students)
-   Tabela przechowująca przypisanie uczniów do klas.
+   Tabela przechowująca przypisanie uczniów do klas. Uczeń może być przypisany tylko do jednej klasy.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -95,7 +95,7 @@ Dodatkowe informacje :
    * `name` - unikalna wartość
 
 5. Plan zajęć(time_table)
-   Tabela przechowująca plan zajęć.
+   Tabela przechowująca zajęcia z planu zajęć. Rekord odpowiada jednym zajęciom odbywającym się w zadanym dniu i godzinie. Zajęcia mogą być przenoszone między godzinami lub odwoływane.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -130,6 +130,7 @@ Dodatkowe informacje :
    * `tid` - użytkownik o tym identyfikatorze musi mieć rolę **teacher**
 
 6. Lekcje(lessons)
+   Tabela zawiera lekcje, które zostały przeprowadzone przez nauczycieli. Lekcja jest przypisana do zajęć z planu zajęć.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -149,6 +150,7 @@ Dodatkowe informacje :
    * `description` - domyślnie **NULL**
 
 7. Obecność(attendance)
+   Tabela zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (*undefined*).
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -166,12 +168,14 @@ Dodatkowe informacje :
    * `status`
 * Ograniczenia : 
    * `status` - wartość z listy statusów obecności : 
+      * undefined
       * present
       * absent
       * late
 
 
 8. Oceny(grades)
+   Tabela zawiera listę ocen uczniów.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -216,6 +220,7 @@ Dodatkowe informacje :
 
 
 9. Sprawdziany(tests)
+   Tabela zawierając listę sprawdzianów.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -235,6 +240,7 @@ Dodatkowe informacje :
    * `description` - domyślnie **NULL**
 
 10. Zadanie domowe(homework)
+   Tabela zawierająca listę zadań domowych.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -264,6 +270,7 @@ Dodatkowe informacje :
 
 
 11. Wiadomości(messages)
+   Tabela zawierająca wiadomości wysyłane przez użytkowników. Wiadomość może być odpowiedzią do innej wiadomości poprzez ustawienie pola `pmid`.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
