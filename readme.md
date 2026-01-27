@@ -75,3 +75,27 @@ Dodatkowe informacje :
 Dodatkowe informacje :
 * Klucz główny : Kolumna `sbid` jest unikalnym identyfikatorem przedmiotu.
 * Obowiązkowe kolumny : Podczas dodawania przedmiotu należy podać wartość pola `name`.
+
+5. Plan zajęć(time_table)
+   Tabela przechowująca plan zajęć.
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| ttid | INTEGER | - | Identyfikator zajęć w planie zajęć. |
+| date | DATE | - | Dzień, w którym mają odbywać się zajęcia. |
+| start_time | TIME | - | Godzina rozpoczęcia zajęć. |
+| end_time | TIME | - | Godzina zakończenia zajęć. |
+| cid | INTEGER | - | Identyfikator klasy, której dotyczą zajęcia. |
+| tid | INTEGER | - | Identyfikator nauczyciela, który prowadzi zajęcia. |
+| sbid | INTEGER | - | Identyfikator przedmiotu. |
+| canceled | BOOLEAN | - | Flaga informująca czy zajęcia zostały odwołane. |
+| moved | BOOLEAN | - | Flaga informująca czy zajęcia zostały przesunięte (np. odbywają się w innym dniu lub o innej godzinie). | 
+
+Dodatkowe informacje : 
+* Klucz główny : Kolumna `ttid` jest unikalnym identyfikatorem zajęć.
+* Obowiązkowe kolumny : Podczas dodawania nowych zajęć należy podać wartości pól `date`, `start_time`, `end_time`, `cid`, `tid` oraz `sbid`.
+* Klucze obce : 
+   * Kolumna `cid` - Identyfikator klasy (kolumna `cid` w tabeli *classes*).
+   * Kolumna `tid` - Identyfikator nauczyciela (kolumna `uid` w tabeli *users*).
+   * Kolumna `sbid` - Identyfikator przedmiotu (kolumna `sbid` w tabeli *subjects*).
+* Kolumna `tid` : Kolumna musi zawierać identyfikator użytkownika, którego rola to 'teacher'.
