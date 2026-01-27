@@ -48,3 +48,18 @@ Dodatkowe informacje :
 * Obowiązkowe kolumny : Podczas wstawiania nowej klasy do tabeli należy podać wartości pól `number` i `letter`.
 * Kolumna `number` : Kolumna zawiera cyfrę z przedziału 0-8.
 * Kolumna `letter` : Kolumna zawiera pojedynczą wielką literę (np. A, B, F).
+
+3. Uczniowie(students)
+   Tabela przechowująca przypisanie uczniów do klas..
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| sid | INTEGER | - | Identyfikator ucznia. |
+| cid | INTEGER | - | Identyfikator klasy. |
+
+Dodatkowe informacje :
+* Klucze obce :
+   * Kolumna `sid` - Identyfikator konta ucznia (kolumna `uid` w tabeli *users*).
+   * Kolumna `cid` - Identyfikator klasy (kolumna `cid` w tabeli *classes*).
+* Obowiązkowe kolumny : Podczas przypisywania ucznia do klasy należy podać wartości pól `sid` oraz `cid`.
+* Kolumna `sid` : Kolumna musi zawierać identyfikator użytkownika, którego rola to 'student'.
