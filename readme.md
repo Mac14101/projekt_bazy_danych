@@ -50,7 +50,7 @@ Dodatkowe informacje :
 * Kolumna `letter` : Kolumna zawiera pojedynczą wielką literę (np. A, B, F).
 
 3. Uczniowie(students)
-   Tabela przechowująca przypisanie uczniów do klas..
+   Tabela przechowująca przypisanie uczniów do klas.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -63,3 +63,15 @@ Dodatkowe informacje :
    * Kolumna `cid` - Identyfikator klasy (kolumna `cid` w tabeli *classes*).
 * Obowiązkowe kolumny : Podczas przypisywania ucznia do klasy należy podać wartości pól `sid` oraz `cid`.
 * Kolumna `sid` : Kolumna musi zawierać identyfikator użytkownika, którego rola to 'student'.
+
+4. Przedmioty(subjects)
+   Tabela przechowująca listę przedmiotów.
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| sbid | INTEGER | - | Identyfikator przedmiotu. |
+| name | VARCHAR | 100 | Nazwa przedmiotu. |
+
+Dodatkowe informacje :
+* Klucz główny : Kolumna `sbid` jest unikalnym identyfikatorem przedmiotu.
+* Obowiązkowe kolumny : Podczas dodawania przedmiotu należy podać wartość pola `name`.
