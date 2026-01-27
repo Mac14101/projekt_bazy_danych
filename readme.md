@@ -99,3 +99,16 @@ Dodatkowe informacje :
    * Kolumna `tid` - Identyfikator nauczyciela (kolumna `uid` w tabeli *users*).
    * Kolumna `sbid` - Identyfikator przedmiotu (kolumna `sbid` w tabeli *subjects*).
 * Kolumna `tid` : Kolumna musi zawierać identyfikator użytkownika, którego rola to 'teacher'.
+
+6. Lekcje(lessons)
+
+| Nazwa kolumny | Typ | Długość | Opis |
+|-|-|-|-|
+| lid | INTEGER | - | Identyfikator lekcji. |
+| ttid | INTEGER | - | Identyfikator zajęć w planie zajęć. |
+| topic | VARCHAR | 200 | Temat lekcji. |
+| description | TEXT | - | Opis lekcji. |
+
+Dodatkowe informacje : 
+* Klucz główny : Kolumna `lid` jest unikatowym identyfikatorem lekcji.
+* Obowiązkowe kolumny : Podczas dodawania nowych zajęć należy podać wartości pól `lid`, `ttid` i `topic`.
