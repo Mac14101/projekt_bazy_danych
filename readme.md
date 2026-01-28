@@ -265,7 +265,7 @@ Dodatkowe informacje :
 | sbid | INTEGER | - | Identyfikator przedmiotu, którego dotyczy zadanie domowe. |
 | title | VARCHAR | 200 | Tytuł zadania domowego. |
 | description | TEXT | - | Opis zadania domowego. |
-| date | TEXT | - | Data, określająca termin oddania zadania domowego. |
+| date | DATE | - | Data, określająca termin oddania zadania domowego. |
 
 Dodatkowe informacje :
 * Klucz główny `hid`
