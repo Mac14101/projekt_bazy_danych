@@ -1,7 +1,7 @@
 -- tables
 -- Table: attendance
 CREATE TABLE IF NOT EXISTS attendance (
-    sid serial  NOT NULL,
+    sid int  NOT NULL,
     lid int  NOT NULL,
     status varchar(10)  NOT NULL DEFAULT 'undefined' CHECK (status IN ('undefined', 'present', 'absent', 'late')),
     CONSTRAINT attendance_pk PRIMARY KEY (sid,lid)
