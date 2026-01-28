@@ -45,7 +45,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| cid | INTEGER | - | Unikatowy identyfikator klasy. |
+| cid | SERIAL | - | Unikatowy identyfikator klasy. |
 | number | INTEGER | - | Numer klasy (np. 1, 2, 7). |
 | letter | CHAR | 1 | Litera klasy (np. A, B, D). |
 
@@ -87,7 +87,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| sbid | INTEGER | - | Identyfikator przedmiotu. |
+| sbid | SERIAL | - | Identyfikator przedmiotu. |
 | name | VARCHAR | 100 | Nazwa przedmiotu. |
 
 Dodatkowe informacje :
@@ -102,7 +102,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| ttid | INTEGER | - | Identyfikator zajęć w planie zajęć. |
+| ttid | SERIAL | - | Identyfikator zajęć w planie zajęć. |
 | date | DATE | - | Dzień, w którym mają odbywać się zajęcia. |
 | start_time | TIME | - | Godzina rozpoczęcia zajęć. |
 | end_time | TIME | - | Godzina zakończenia zajęć. |
@@ -140,7 +140,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| lid | INTEGER | - | Identyfikator lekcji. |
+| lid | SERIAL | - | Identyfikator lekcji. |
 | ttid | INTEGER | - | Identyfikator zajęć w planie zajęć. |
 | topic | VARCHAR | 200 | Temat lekcji. |
 | description | TEXT | - | Opis lekcji. |
@@ -191,7 +191,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| gid | INTEGER | - | Identyfikator oceny |
+| gid | SERIAL | - | Identyfikator oceny |
 | sid | INTEGER | - | Identyfikator ucznia |
 | tid | INTEGER | - | Identyfikator nauczyciela, który dodał ocenę. |
 | sbid | INTEGER | - | Identyfikator przedmiotu, którego dotyczy ocena. |
@@ -239,7 +239,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| tsid | INTEGER | - | Identyfikator sprawdzianu |
+| tsid | SERIAL | - | Identyfikator sprawdzianu |
 | ttid | INTEGER | - | Identyfikator zajęć z planu zajęć. |
 | title | VARCHAR | 200 | Tytuł sprawdzianu. |
 | description | TEXT | - | Opis sprawdzianu. |
@@ -259,7 +259,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| hid | INTEGER | - | Identyfikator zadania domowego. |
+| hid | SERIAL | - | Identyfikator zadania domowego. |
 | cid | INTEGER | - | Identyfikator klasy, której dotyczy zadanie domowe. |
 | tid | INTEGER | - | Identyfikator nauczyciela, który zadał zadanie domowe. |
 | sbid | INTEGER | - | Identyfikator przedmiotu, którego dotyczy zadanie domowe. |
@@ -289,7 +289,7 @@ Dodatkowe informacje :
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| mid | INTEGER | - | Identyfikator wiadomości. |
+| mid | SERIAL | - | Identyfikator wiadomości. |
 | snid | INTEGER | - | Identyfikator nadawcy wiadomości. |
 | rcid | INTEGER | - | Identyfikator odbiorcy wiadomości. |
 | title | VARCHAR | 200 | Tytuł wiadomości. |
