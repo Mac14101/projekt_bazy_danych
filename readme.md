@@ -78,6 +78,9 @@ Dodatkowe informacje :
    * `sid` - wartość unikalna
 * Dodatkowe warunki :
    * `sid` - użytkownik o tym identyfikatorze musi mieć rolę **student**
+* Triggery : 
+   * *students_table_insert_trigger* - trigger wywoływany podczas wstawiania rekordu do tabeli, sprawdza czy użytkownik o podanym identyfikatorze ma rolę **student**
+   * *students_table_update_trigger* - trigger wywoływany podczas aktualizacji rekordu w tabeli, sprawdza czy użytkownik o podanym identyfikatorze ma rolę **student**
 
 4. Przedmioty(subjects)
    Tabela przechowująca listę przedmiotów.
@@ -128,6 +131,9 @@ Dodatkowe informacje :
 * Dodatkowe warunki :
    * (`date`, `start_time`, `end_time`) - klasa nie może mieć w tym czasie innych zajęć
    * `tid` - użytkownik o tym identyfikatorze musi mieć rolę **teacher**
+* Triggery :
+   * *time_table_insert_trigger* - trigger wywoływany podczas wstawiania rekordu do tabeli, sprawdza czy klasa o podanym numerze id ma zaplanowane zajęcia w podanym czasie, oraz czy użytkownik o podanym identyfikatorze ma rolę **teacher**
+   * *time_table_update_trigger* - trigger wywoływany podczas aktualizacji rekordu z tabeli, sprawdza czy klasa o podanym numerze id ma zaplanowane zajęcia w podanym czasie, oraz czy użytkownik o podanym identyfikatorze ma rolę **teacher**
 
 6. Lekcje(lessons)
    Tabela zawiera lekcje, które zostały przeprowadzone przez nauczycieli. Lekcja jest przypisana do zajęć z planu zajęć.
@@ -150,7 +156,7 @@ Dodatkowe informacje :
    * `description` - domyślnie **NULL**
 
 7. Obecność(attendance)
-   Tabela zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (*undefined*).
+   Tabela zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (**undefined**).
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -217,6 +223,9 @@ Dodatkowe informacje :
 * Dodatkowe warunki :
    * `sid` - użytkownik o tym identyfikatorze musi mieć rolę **student**
    * `tid` - użytkownik o tym identyfikatorze musi mieć rolę **teacher**
+* Triggery : 
+   * *grades_table_insert_trigger* - - trigger wywoływany podczas wstawiania rekordu do tabeli, sprawdza czy uczeń o podanym id faktycznie posiada rolę **student**, oraz czy nauczyciel o podanym id faktycznie posiada rolę **teacher**
+   * *grades_table_update_trigger* - - trigger wywoływany podczas aktualizacji rekordu z tabeli, sprawdza czy uczeń o podanym id faktycznie posiada rolę **student**, oraz czy nauczyciel o podanym id faktycznie posiada rolę **teacher**
 
 
 9. Sprawdziany(tests)
