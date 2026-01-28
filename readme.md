@@ -18,7 +18,7 @@ Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
-| uid | INTEGER | - | Unikatowy identyfikator przypisany do użytkownika |
+| uid | SERIAL | - | Unikatowy identyfikator przypisany do użytkownika |
 | email | VARCHAR | 100 | Adres e-mail użytkownika. |
 | name | VARCHAR | 50 | Imie użytkownika. |
 | surname | VARCHAR | 50 | Nazwisko użytkownika. |
@@ -154,6 +154,12 @@ Dodatkowe informacje :
    * `topic`
 * Wartości domyślne :
    * `description` - domyślnie **NULL**
+* Ograniczenia :
+   * `ttid` - wartość unikalna
+* Dodatkowe warunki :
+   * `ttid` - lekcja nie może być przypisana do odwołanych zajęć, wartość nie może być zmieniana
+* Triggery :
+   * *lessons_insert_table* - trigger wywoływany przy dodawaniu rekordu do tabeli, sprawdza czy zajęcia z planu zajęć ne są odwołane
 
 7. Obecność(attendance)
    Tabela zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (**undefined**).
