@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     surname varchar(50)  NOT NULL,
     password text  NOT NULL,
     role varchar(20)  NOT NULL,
+    cid int  NULL,
     CONSTRAINT users_ak_email UNIQUE (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT role CHECK (role IN ('admin', 'teacher', 'student')) NOT DEFERRABLE INITIALLY IMMEDIATE,
     CONSTRAINT users_pk PRIMARY KEY (uid)
@@ -20,13 +21,6 @@ CREATE TABLE IF NOT EXISTS classes (
     CONSTRAINT check_number CHECK (number >= 0 AND number <= 8) NOT DEFERRABLE INITIALLY IMMEDIATE,
     CONSTRAINT check_letter CHECK (letter = UPPER(letter)) NOT DEFERRABLE INITIALLY IMMEDIATE,
     CONSTRAINT classes_pk PRIMARY KEY (cid)
-);
-
--- Tabela uczniów
-CREATE TABLE IF NOT EXISTS students (
-    sid int  NOT NULL,
-    cid int  NOT NULL,
-    CONSTRAINT students_pk PRIMARY KEY (sid)
 );
 
 -- Tabela przedmiotów
@@ -53,12 +47,12 @@ CREATE TABLE IF NOT EXISTS time_table (
 
 -- Tabela lekcji
 CREATE TABLE IF NOT EXISTS lessons (
-   lid serial  NOT NULL,
-   ttid int  NOT NULL,
-   topic varchar(200)  NOT NULL,
-   description text  NULL,
-   CONSTRAINT lessons_ak_ttid UNIQUE (ttid) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-   CONSTRAINT lessons_pk PRIMARY KEY (lid)
+    lid serial  NOT NULL,
+    ttid int  NOT NULL,
+    topic varchar(200)  NOT NULL,
+    description text  NULL,
+    CONSTRAINT lessons_ak_ttid UNIQUE (ttid) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT lessons_pk PRIMARY KEY (lid)
 );
 
 -- Tabela obecności
@@ -106,25 +100,19 @@ CREATE TABLE homework (
 
 -- Tabela wiadomości
 CREATE TABLE messages (
-   mid serial  NOT NULL,
-   snid int  NOT NULL,
-   rcid int  NOT NULL,
-   title varchar(200)  NOT NULL,
-   content text  NOT NULL,
-   pmid int  NULL,
-   CONSTRAINT messages_pk PRIMARY KEY (mid)
+    mid serial  NOT NULL,
+    snid int  NOT NULL,
+    rcid int  NOT NULL,
+    title varchar(200)  NOT NULL,
+    content text  NOT NULL,
+    pmid int  NULL,
+    CONSTRAINT messages_pk PRIMARY KEY (mid)
 );
 
 -- Dodawanie kluczy obcych do tabel
 
--- Tabela students
-ALTER TABLE students ADD CONSTRAINT students_users
-    FOREIGN KEY (sid)
-    REFERENCES users (uid)  
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-ALTER TABLE students ADD CONSTRAINT classes_students
+-- Tabela users
+ALTER TABLE user ADD CONSTRAINT classes_users
     FOREIGN KEY (cid)
     REFERENCES classes (cid)  
     NOT DEFERRABLE 

@@ -16,9 +16,8 @@ CREATE VIEW teachers_list AS
 CREATE VIEW students_list AS
     SELECT U.uid, U.email, U.name, U.surname, C.number, C.letter
     FROM users U
-        LEFT JOIN students S ON U.uid=S.sid
-        INNER JOIN classes C ON S.cid=C.cid
-    WHERE role='admin'
+        INNER JOIN classes C ON U.cid=C.cid
+    WHERE role='student'
     ORDER BY C.number, C.letter, U.name, U.surname;
 
 -- Plan zajęć oraz przeprowadzone lekcje
