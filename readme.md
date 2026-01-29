@@ -325,9 +325,9 @@ Dodatkowe informacje :
     Kwerenda SQL :
     ```sql
 CREATE VIEW students_list AS
-    SELECT U.uid, U.email, U.name, U.surname, C.number, C.letter
+    SELECT U.uid, U.email, U.name, U.surname, CONCAT(C.number, C.letter)
     FROM users U
-        INNER JOIN classes C ON U.cid=C.cid
+        LEFT JOIN classes C ON U.cid=C.cid
     WHERE role='student'
     ORDER BY C.number, C.letter, U.name, U.surname;
     ```
