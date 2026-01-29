@@ -120,7 +120,7 @@ CREATE TABLE messages (
 -- Dodawanie kluczy obcych do tabel
 
 -- Tabela users
-ALTER TABLE user ADD CONSTRAINT classes_users
+ALTER TABLE users ADD CONSTRAINT classes_users
     FOREIGN KEY (cid)
     REFERENCES classes (cid)  
     NOT DEFERRABLE 
@@ -162,7 +162,7 @@ ALTER TABLE attendance ADD CONSTRAINT attendance_lessons
     INITIALLY IMMEDIATE;
 ALTER TABLE attendance ADD CONSTRAINT attendance_students
     FOREIGN KEY (sid)
-    REFERENCES students (sid)  
+    REFERENCES users (uid)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -171,7 +171,7 @@ ALTER TABLE attendance ADD CONSTRAINT attendance_students
 -- Tabela ocen
 ALTER TABLE grades ADD CONSTRAINT grades_students
     FOREIGN KEY (sid)
-    REFERENCES students (sid)  
+    REFERENCES users (uid)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -266,17 +266,17 @@ CREATE VIEW students_list AS
 
 -- Plan zajęć oraz przeprowadzone lekcje
 CREATE VIEW lessons_list AS
-    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, L.topic, L.description, C.number, C.letter, T.name AS teacher_name, T.teacher_surname AS tsurname
+    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, L.topic, L.description, C.number, C.letter, T.name AS teacher_name, T.surname AS teacher_surname
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid
         INNER JOIN users T ON TT.tid=T.uid
         INNER JOIN subjects SB ON TT.sbid=SB.sbid
-    ORDER BY C.number, C.letter, TT.date, TT.startTime;
+    ORDER BY C.number, C.letter, TT.date, TT.start_time;
 
 -- Lista wiadomości
 CREATE VIEW messages_list AS
-    SELECT M.mid, M.title, M.content, M.snid AS sender_id, SN.name AS sender_name, SN.surname AS sender_surname, M.rcid AS receiver_id, RC.name receiver_name, RC.surname AS receiver_surname, PM.title, PM.content
+    SELECT M.mid, M.title, M.content, M.snid AS sender_id, SN.name AS sender_name, SN.surname AS sender_surname, M.rcid AS receiver_id, RC.name receiver_name, RC.surname AS receiver_surname, PM.title AS previous_message_title, PM.content AS previous_message_content
     FROM messages M
         INNER JOIN users SN ON M.snid=SN.uid
         INNER JOIN users RC ON M.rcid=RC.uid

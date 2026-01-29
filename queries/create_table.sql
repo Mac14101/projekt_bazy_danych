@@ -112,7 +112,7 @@ CREATE TABLE messages (
 -- Dodawanie kluczy obcych do tabel
 
 -- Tabela users
-ALTER TABLE user ADD CONSTRAINT classes_users
+ALTER TABLE users ADD CONSTRAINT classes_users
     FOREIGN KEY (cid)
     REFERENCES classes (cid)  
     NOT DEFERRABLE 
@@ -154,7 +154,7 @@ ALTER TABLE attendance ADD CONSTRAINT attendance_lessons
     INITIALLY IMMEDIATE;
 ALTER TABLE attendance ADD CONSTRAINT attendance_students
     FOREIGN KEY (sid)
-    REFERENCES students (sid)  
+    REFERENCES users (uid)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -163,7 +163,7 @@ ALTER TABLE attendance ADD CONSTRAINT attendance_students
 -- Tabela ocen
 ALTER TABLE grades ADD CONSTRAINT grades_students
     FOREIGN KEY (sid)
-    REFERENCES students (sid)  
+    REFERENCES users (uid)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
