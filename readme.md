@@ -1,3 +1,9 @@
+# Spis treści
+
+1. [System e-dziennik](#system-e-dziennik)
+2. [Tabele](#tabele)
+3. [Widoki](#widoki)
+
 # System e-dziennik
 
 Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e-dziennika. Baza danych przechowuje :
@@ -11,7 +17,7 @@ Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e
 * listę ocen uczniów
 * terminy sprawdzianów
 
-## Tabele w bazie danych
+## Tabele
 
 1. Użytkownicy(users)
    Tabela przechowująca konta użytkowników aplikacji. Zawiera dane używane do uwierzytelniania, podczas używania aplikacji, oraz dane personalne użytkownika.
@@ -233,7 +239,6 @@ Dodatkowe informacje :
    * *grades_table_insert_trigger* - - trigger wywoływany podczas wstawiania rekordu do tabeli, sprawdza czy uczeń o podanym id faktycznie posiada rolę **student**, oraz czy nauczyciel o podanym id faktycznie posiada rolę **teacher**
    * *grades_table_update_trigger* - - trigger wywoływany podczas aktualizacji rekordu z tabeli, sprawdza czy uczeń o podanym id faktycznie posiada rolę **student**, oraz czy nauczyciel o podanym id faktycznie posiada rolę **teacher**
 
-
 9. Sprawdziany(tests)
    Tabela zawierając listę sprawdzianów.
 
@@ -282,8 +287,6 @@ Dodatkowe informacje :
    * `description` - domyślnie **NULL**
    * `date` - domyślnie **NOW()**
 
-
-
 11. Wiadomości(messages)
    Tabela zawierająca wiadomości wysyłane przez użytkowników. Wiadomość może być odpowiedzią do innej wiadomości poprzez ustawienie pola `pmid`.
 
@@ -312,7 +315,7 @@ Dodatkowe informacje :
 
 ## Widoki
 
-1. Lista administratorów
+1. Lista administratorów(admins_list)
    Widok zawierający listę użytkowników o roli administratora. Lista posortowana jest alfabetycznie.
 
    Kwerenda SQL :
@@ -320,10 +323,10 @@ Dodatkowe informacje :
    SELECT uid, email, name, surname
    FROM users
    WHERE role='admin'
-   ORDER BY name, surname;;
+   ORDER BY name, surname;
    ```
 
-2. Lista nauczycieli
+2. Lista nauczycieli(teachers)
    Widok zawierający listę użytkowników o roli nauczyciela. Lista posortowana jest alfabetycznie.
 
    Kwerenda SQL :
@@ -333,7 +336,7 @@ Dodatkowe informacje :
    WHERE role='teacher'
    ORDER BY name, surname;
    ```
-3. Lista uczniów
+3. Lista uczniów(students_list)
    Widok zawierający listę użytkowników o roli ucznia. Lista posortowana jest według klas oraz alfabetycznie względem imion nazwisk.
 
    Kwerenda SQL :
@@ -345,7 +348,7 @@ Dodatkowe informacje :
    WHERE role='admin'
    ORDER BY C.number, C.letter, U.name, U.surname;
    ```
-4. Plan zajęć oraz przeprowadzone lekcje
+4. Plan zajęć oraz przeprowadzone lekcje(lessons_list)
    Widok zawierający plan zajęć z przypisanymi lekcjami, które zostały przeprowadzone przez nauczycieli. Plan zajęć jest posortowany według klas.
 
    Kwerenda SQL :
@@ -356,9 +359,9 @@ Dodatkowe informacje :
       INNER JOIN classes C ON TT.cid=C.cid
       INNER JOIN users T ON TT.tid=T.uid
       INNER JOIN subjects SB ON TT.sbid=SB.sbid
-   ORDER BY C.number, C.letter, TT.date, TT.startTime; 
+   ORDER BY C.number, C.letter, TT.date, TT.startTime;
    ```
-5. Lista wiadomości
+5. Lista wiadomości(messages_list)
    Widok zawierający listę wiadomości oraz przypisane poprzednie wiadomości, których dotyczą.
    
    Kwerenda SQL:
