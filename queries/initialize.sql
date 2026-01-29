@@ -5,7 +5,6 @@
 
 
 -- Tworzenie tabel
-
 -- Tabela użytkowników
 CREATE TABLE IF NOT EXISTS users (
     uid serial  NOT NULL,
@@ -123,6 +122,8 @@ CREATE TABLE messages (
 ALTER TABLE users ADD CONSTRAINT classes_users
     FOREIGN KEY (cid)
     REFERENCES classes (cid)  
+    ON UPDATE CASCADE
+    ON DELETE SET NULL 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -131,18 +132,24 @@ ALTER TABLE users ADD CONSTRAINT classes_users
 ALTER TABLE time_table ADD CONSTRAINT time_table_classes
     FOREIGN KEY (cid)
     REFERENCES classes (cid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE time_table ADD CONSTRAINT time_table_subjects
     FOREIGN KEY (sbid)
     REFERENCES subjects (sbid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE time_table ADD CONSTRAINT time_table_users
     FOREIGN KEY (tid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -151,6 +158,8 @@ ALTER TABLE time_table ADD CONSTRAINT time_table_users
 ALTER TABLE lessons ADD CONSTRAINT lessons_time_table
     FOREIGN KEY (ttid)
     REFERENCES time_table (ttid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE;
 
@@ -158,11 +167,15 @@ ALTER TABLE lessons ADD CONSTRAINT lessons_time_table
 ALTER TABLE attendance ADD CONSTRAINT attendance_lessons
     FOREIGN KEY (lid)
     REFERENCES lessons (lid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE;
 ALTER TABLE attendance ADD CONSTRAINT attendance_students
     FOREIGN KEY (sid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -172,18 +185,24 @@ ALTER TABLE attendance ADD CONSTRAINT attendance_students
 ALTER TABLE grades ADD CONSTRAINT grades_students
     FOREIGN KEY (sid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE grades ADD CONSTRAINT grades_subjects
     FOREIGN KEY (sbid)
     REFERENCES subjects (sbid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE grades ADD CONSTRAINT grades_users
     FOREIGN KEY (tid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE SET NULL 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -192,6 +211,8 @@ ALTER TABLE grades ADD CONSTRAINT grades_users
 ALTER TABLE tests ADD CONSTRAINT tests_time_table
     FOREIGN KEY (ttid)
     REFERENCES time_table (ttid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -200,18 +221,24 @@ ALTER TABLE tests ADD CONSTRAINT tests_time_table
 ALTER TABLE homework ADD CONSTRAINT homework_classes
     FOREIGN KEY (cid)
     REFERENCES classes (cid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE homework ADD CONSTRAINT homework_subjects
     FOREIGN KEY (sbid)
     REFERENCES subjects (sbid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE homework ADD CONSTRAINT homework_users
     FOREIGN KEY (tid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -220,18 +247,24 @@ ALTER TABLE homework ADD CONSTRAINT homework_users
 ALTER TABLE messages ADD CONSTRAINT messages_messages
     FOREIGN KEY (pmid)
     REFERENCES messages (mid)  
+    ON UPDATE CASCADE
+    ON DELETE SET NULL 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE messages ADD CONSTRAINT messages_users_r
     FOREIGN KEY (rcid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE SET NULL 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 ALTER TABLE messages ADD CONSTRAINT messages_users_s
     FOREIGN KEY (snid)
     REFERENCES users (uid)  
+    ON UPDATE CASCADE
+    ON DELETE SET NULL 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -270,7 +303,7 @@ CREATE VIEW lessons_list AS
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid
-        INNER JOIN users T ON TT.tid=T.uid
+        LEFT JOIN users T ON TT.tid=T.uid
         INNER JOIN subjects SB ON TT.sbid=SB.sbid
     ORDER BY C.number, C.letter, TT.date, TT.start_time;
 

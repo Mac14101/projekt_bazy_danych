@@ -340,7 +340,7 @@ CREATE VIEW students_list AS
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid
-        INNER JOIN users T ON TT.tid=T.uid
+        LEFT JOIN users T ON TT.tid=T.uid
         INNER JOIN subjects SB ON TT.sbid=SB.sbid
     ORDER BY C.number, C.letter, TT.date, TT.start_time;
     ```
