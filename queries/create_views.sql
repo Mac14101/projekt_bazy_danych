@@ -22,7 +22,7 @@ CREATE VIEW students_list AS
 
 -- Plan zajęć oraz przeprowadzone lekcje
 CREATE VIEW lessons_list AS
-    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, L.topic, L.description, C.number, C.letter, T.name AS teacher_name, T.surname AS teacher_surname
+    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, SB.name AS subject_name, CONCAT(C.number, C.letter), L.topic, L.description, T.name AS teacher_name, T.surname AS teacher_surname
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid
