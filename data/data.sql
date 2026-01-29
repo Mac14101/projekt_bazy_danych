@@ -62,3 +62,31 @@ INSERT INTO users (email, name, surname, password, role) VALUES
 ('laura.kasprzyk@example.com', 'Laura', 'Kasprzyk', 'LauraKas', 'student'),
 ('bartlomiej.wojda@example.com', 'Bartłomiej', 'Wojda', 'BartWojda', 'student'),
 ('weronika.mazurkiewicz@example.com', 'Weronika', 'Mazurkiewicz', 'WeronikaM', 'student');
+
+-- Tabela classes
+
+INSERT INTO classes (number, letter) VALUES
+(1, 'A'),
+(2, 'A'),
+(3, 'A'),
+(4, 'A'),
+(5, 'A'),
+(6, 'A'),
+(7, 'A'),
+(8, 'A'),
+(1, 'B'),
+(2, 'B'),
+(3, 'B'),
+(4, 'B'),
+(5, 'B'),
+(6, 'B'),
+(7, 'B'),
+(8, 'B'),
+(4, 'C'),
+(5, 'C');
+
+-- Przypisywanie uczniów do klas
+
+UPDATE users
+SET cid=FLOOR(RANDOM()*(SELECT COUNT(cid) FROM classes))+1
+WHERE role='student';
