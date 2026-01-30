@@ -37,7 +37,7 @@ BEFORE UPDATE ON time_table
 FOR EACH ROW
 EXECUTE FUNCTION time_table_logic_func();
 
--- Funkcja do triggera tabeli lessons
+-- Funkcja do triggera sprawdza odwołane zajęcia
 CREATE OR REPLACE FUNCTION lessons_insert_table_func()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -67,6 +67,27 @@ BEFORE INSERT OR UPDATE ON lessons
 FOR EACH ROW
 EXECUTE FUNCTION lessons_insert_table_func();
 
+-- Funkcja do triggera do dodawania rekordow do tabeli attendance ze statusem undefined
+CREATE OR REPLACE FUNCTION lesson_insert_attendance_func()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO attendance (sid, lid, status)
+    SELECT u.uid, NEW.lid, 'undefined'
+    FROM users u
+    JOIN time_table tt ON u.cid = tt.cid
+    WHERE tt.ttid = NEW.ttid 
+      AND u.role = 'student';
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger wywoływany przy dodawaniu rekordu do tabeli, dodaje rekordy do tabeli attendance ze statusem undefined dla wszystkich uczniów których dotyczy lekcja
+CREATE TRIGGER lesson_insert_attendance_trigger
+AFTER INSERT ON lessons
+FOR EACH ROW
+EXECUTE FUNCTION lesson_insert_attendance_func();
+
 -- Funkcja do triggerow tabeli grades_table
 CREATE OR REPLACE FUNCTION grades_table_logic_func()
 RETURNS TRIGGER AS $$
@@ -93,4 +114,5 @@ EXECUTE FUNCTION grades_table_logic_func();
 CREATE TRIGGER grades_table_update_trigger
 BEFORE UPDATE ON grades
 FOR EACH ROW
+
 EXECUTE FUNCTION grades_table_logic_func();
