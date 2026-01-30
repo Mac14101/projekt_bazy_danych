@@ -65,7 +65,7 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER lessons_insert_table_trigger
 BEFORE INSERT OR UPDATE ON lessons
 FOR EACH ROW
-EXECUTE FUNCTION check_lesson_requirements_func();
+EXECUTE FUNCTION lessons_insert_table_func();
 
 -- Funkcja do triggerow tabeli grades_table
 CREATE OR REPLACE FUNCTION grades_table_logic_func()
