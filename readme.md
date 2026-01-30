@@ -319,14 +319,13 @@ Dodatkowe informacje :
     FROM users
     WHERE role='teacher'
     ORDER BY name, surname;
-   ```
+    ```
 3. Lista uczniów(students_list)
     Widok zawierający listę użytkowników o roli ucznia. Lista posortowana jest według klas oraz alfabetycznie względem imion nazwisk.
 
     Kwerenda SQL :
     ```sql
-CREATE VIEW students_list AS
-    SELECT U.uid, U.email, U.name, U.surname, CONCAT(C.number, C.letter)
+    SELECT U.uid, U.email, U.name, U.surname, CONCAT(C.number, C.letter) AS 'class'
     FROM users U
         LEFT JOIN classes C ON U.cid=C.cid
     WHERE role='student'
@@ -337,7 +336,7 @@ CREATE VIEW students_list AS
 
     Kwerenda SQL :
     ```sql
-    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, SB.name AS subject_name, CONCAT(C.number, C.letter), L.topic, L.description, T.name AS teacher_name, T.surname AS teacher_surname
+    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, SB.name AS subject_name, CONCAT(C.number, C.letter) AS 'class', L.topic, L.description, T.name AS teacher_name, T.surname AS teacher_surname
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid

@@ -416,7 +416,7 @@ CREATE VIEW teachers_list AS
 
 -- Lista uczniów
 CREATE VIEW students_list AS
-    SELECT U.uid, U.email, U.name, U.surname, CONCAT(C.number, C.letter)
+    SELECT U.uid, U.email, U.name, U.surname, CONCAT(C.number, C.letter) AS class
     FROM users U
         LEFT JOIN classes C ON U.cid=C.cid
     WHERE role='student'
@@ -424,7 +424,7 @@ CREATE VIEW students_list AS
 
 -- Plan zajęć oraz przeprowadzone lekcje
 CREATE VIEW lessons_list AS
-    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, SB.name AS subject_name, CONCAT(C.number, C.letter), L.topic, L.description, T.name AS teacher_name, T.surname AS teacher_surname
+    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, SB.name AS subject_name, CONCAT(C.number, C.letter) AS class, L.topic, L.description, T.name AS teacher_name, T.surname AS teacher_surname
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid
