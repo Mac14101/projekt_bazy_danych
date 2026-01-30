@@ -325,9 +325,9 @@ Dodatkowe informacje :
     Kwerenda SQL :
     ```sql
 CREATE VIEW students_list AS
-    SELECT U.uid, U.email, U.name, U.surname, C.number, C.letter
+    SELECT U.uid, U.email, U.name, U.surname, CONCAT(C.number, C.letter)
     FROM users U
-        INNER JOIN classes C ON U.cid=C.cid
+        LEFT JOIN classes C ON U.cid=C.cid
     WHERE role='student'
     ORDER BY C.number, C.letter, U.name, U.surname;
     ```
@@ -336,7 +336,7 @@ CREATE VIEW students_list AS
 
     Kwerenda SQL :
     ```sql
-    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, L.topic, L.description, C.number, C.letter, T.name AS teacher_name, T.surname AS teacher_surname
+    SELECT TT.ttid, TT.date, TT.start_time, TT.end_time, SB.name AS subject_name, CONCAT(C.number, C.letter), L.topic, L.description, T.name AS teacher_name, T.surname AS teacher_surname
     FROM time_table TT
         LEFT JOIN lessons L ON TT.ttid=L.ttid
         INNER JOIN classes C ON TT.cid=C.cid
