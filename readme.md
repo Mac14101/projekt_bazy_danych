@@ -17,6 +17,8 @@ Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e
 * listę ocen uczniów
 * terminy sprawdzianów
 
+[Dokumentacja użytkowa.](./usage.md)
+
 ## Tabele
 
 1. Użytkownicy(users)
