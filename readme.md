@@ -149,6 +149,7 @@ Dodatkowe informacje :
     * `ttid` - lekcja nie może być przypisana do odwołanych zajęć, wartość nie może być zmieniana
 * Triggery :
     * *lessons_insert_table* - trigger wywoływany przy dodawaniu rekordu do tabeli, sprawdza czy zajęcia z planu zajęć ne są odwołane
+    * *lesson_insert_attendance* - trigger wywoływany przy dodawaniu rekordu do tabeli, dodaje rekordy do tabeli attendance ze statusem **undefined** dla wszystkich uczniów których dotyczy lekcja
 
 6. Obecność(attendance)
     Tabela zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (**undefined**).
