@@ -185,7 +185,7 @@ INSERT INTO lessons (ttid, topic, description) VALUES
 
 
 
--- Tabela Ocen
+-- Tabela ocen
 
 INSERT INTO grades (sid, tid, sbid, grade, title, description) VALUES
 (5, 4, 1, 'bdb', 'Sprawdzian z równań', 'Uczeń świetnie rozwiązał równania liniowe.'),
@@ -208,3 +208,21 @@ INSERT INTO grades (sid, tid, sbid, grade, title, description) VALUES
 (49, 7, 5, 'cel', 'Programowanie w Pythonie', 'Znakomite opanowanie podstaw języka.'),
 (51, 13, 6, 'db', 'Wojny napoleońskie', 'Poprawne przedstawienie faktów historycznych.'),
 (53, 18, 7, 'dop', 'Mapa polityczna świata', 'Uczeń zna podstawowe państwa i stolice.');
+
+
+
+
+
+-- Tabela sprawdzianów
+
+INSERT INTO tests (ttid, title, description) VALUES
+(5, 'Test z algorytmiki i struktur danych', 'Zadania z zakresu schematów blokowych, zmiennych i pętli.'),
+(13, 'Sprawdzian z ustroju państwa', 'Zakres: konstytucja, podział władzy, prawa obywatelskie.'),
+(15, 'Test z podstaw przedsiębiorczości', 'Zagadnienia: rynek, popyt, podaż, konkurencja.'),
+(16, 'Sprawdzian z chemii nieorganicznej', 'Reakcje kwasów i zasad, sole, równania reakcji.'),
+(17, 'Test z geografii fizycznej', 'Formy ukształtowania terenu, typy krajobrazów, procesy geologiczne.'),
+(18, 'Sprawdzian z języka niemieckiego', 'Zakres: odmiana czasowników, zaimki, pytania.'),
+(19, 'Test z historii XIX wieku', 'Rewolucje, powstania narodowe, przemiany społeczne.'),
+(20, 'Sprawdzian z programowania w Pythonie', 'Zadania z instrukcji warunkowych i pętli.'),
+(21, 'Test z funkcji liniowych', 'Zagadnienia: wykresy, miejsca zerowe, współczynniki kierunkowe.'),
+(22, 'Sprawdzian z języka angielskiego', 'Zakres: czasy gramatyczne, słownictwo związane z podróżowaniem.');
