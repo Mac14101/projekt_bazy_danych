@@ -1,6 +1,8 @@
 # Spis treści
 
 1. [Wstawianie danych](#wstawianie-danych)
+2. [Aktualizowanie danych](#aktualizowanie-danych)
+2. [Pobieranie danych](#pobieranie-danych)
 
 ## Wstawianie danych
 
@@ -110,3 +112,96 @@ INSERT INTO homework (cid, tid, sbid, title, description) VALUES (:cid, :tid, :s
    * `cid` - identyfikator przedmiotu, którego dotyczy zadanie (tabela *subjects*)
    * `title` - tytuł zadanie domowego
    * `description` - opis zadania domowego, pole niewymagane
+
+## Aktualizacja danych
+
+## Pobieranie danych
+
+1. Uczniowie z wybranej klasy
+Kwerenda SQL :
+```sql
+SELECT uid, email, name, surname 
+FROM students_list 
+WHERE class = :class_name;
+```
+
+* Parametry :
+   * `class_name` - nazwa klasy (np. 1A, 4D, 5B)
+
+2. Plan zajęć dla klasy na konkretny dzień
+Kwerenda SQL :
+```sql
+SELECT start_time, end_time, subject_name, teacher_surname, topic 
+FROM lessons_list 
+WHERE class = :class_name AND date = :date;
+```
+
+* Parametry :
+   * `class_name` - nazwa klasy (np. 1A, 4D, 5B)
+   * `date` - data, dla której należy sprawdzić plan zajęć
+
+3. Wszystkie lekcje prowadzone przez danego nauczyciela
+Kwerenda SQL :
+```sql
+SELECT date, start_time, subject_name, class, topic 
+FROM lessons_list 
+WHERE teacher_surname = :surname 
+ORDER BY date, start_time;
+```
+
+* Parametry :
+   * `surname` - nazwisko nauczyciela
+
+4. Skrzynka odbiorcza konkretnego użytkownika
+Kwerenda SQL :
+```sql
+SELECT mid, title, content, sender_name, sender_surname, previous_message_title
+FROM messages_list 
+WHERE receiver_id = :user_id 
+ORDER BY mid DESC;
+```
+
+* Parametry :
+   * `user_id` - identyfikator użytkownika
+
+5. Historia konwersacji między dwoma użytkownikami
+Kwerenda SQL :
+```sql
+SELECT sender_name, sender_surname, title, content
+FROM messages_list
+WHERE (sender_id = :user_a AND receiver_id = :user_b)
+   OR (sender_id = :user_b AND receiver_id = :user_a)
+ORDER BY mid ASC;
+```
+
+* Parametry :
+   * `user_a` - identyfikator użytkownika
+   * `user_b` - identyfikator drugiego użytkownika
+
+6. Lista wszystkich nauczycieli uczących dany przedmiot
+Kwerenda SQL :
+```sql
+SELECT DISTINCT teacher_name, teacher_surname 
+FROM lessons_list 
+WHERE subject_name = :subject_name;
+```
+
+* Parametry :
+   * `subject_name` - nazwa przedmiotu
+
+7. Statystyka liczby uczniów w każdej klasie
+Kwerenda SQL :
+```sql
+SELECT class, COUNT(*) as student_count
+FROM students_list
+GROUP BY class
+ORDER BY class;
+```
+
+8. Lista uczniów nie należących do każdej klasy
+Kwerenda SQL :
+```sql
+SELECT name, surname, email
+FROM students_list
+WHERE class IS NULL;
+```
