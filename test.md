@@ -1,4 +1,4 @@
-## Próba rozspójnienia danych w bazie oraz sprawdzenie automatycznego dodawania obecności
+## Próba utrzymania spójności danych w bazie podczas dodawania nieprawidłowych danych oraz sprawdzenie automatycznego dodawania obecności
 
 Scenariusz :
 1. Próba dodania zajęć do planu zajęć z uczniem jako prowadzącym
@@ -50,3 +50,76 @@ FROM attendance A
 WHERE L.topic='TESTOWA LEKCJA';
 ```
 ![Wynik kwerendy z punktu 6](./images/test_1_6.png)
+
+## Próba utrzymania spójności danych podczas usuwania danych
+
+Aby poprawnie wykonać test należy przed każdym punktem upewnić się że w tabelach znajdują się dane dodane za pomocą poniższej kwerendy.
+
+Utworzenie danych
+```sql
+INSERT INTO users (email, name, surname, password, role) VALUES
+('janKowalski@email.com', 'Jan', 'Kowalski', 'haslo123', 'teacher');
+INSERT INTO users (email, name, surname, password, role) VALUES
+('amajewska@email.com', 'Anna', 'Majewska', 'aMaj123', 'student');
+INSERT INTO users (email, name, surname, password, role) VALUES
+('piotrnowak1@email.com', 'Piotr', 'Nowak', 'abc123', 'student');
+INSERT INTO classes (number, letter) VALUES (5, 'F');
+INSERT INTO time_table (date, start_time, end_time, cid, tid, sbid) VALUES
+('2026-02-03', '08:00:00', '08:45:00', (SELECT cid FROM classes WHERE number=5 AND letter='F'), (SELECT uid FROM teachers_list WHERE name='Jan' AND surname='Kowalski'), 1);
+INSERT INTO lessons (ttid, topic, description) VALUES
+((SELECT ttid FROM lessons_list WHERE class='5F'), 'TESTOWA LEKCJA', NULL);
+UPDATE users SET cid=(SELECT cid FROM classes WHERE number=5 AND letter='F')
+WHERE name='Anna' AND surname='Majewska';
+UPDATE users SET cid=(SELECT cid FROM classes WHERE number=5 AND letter='F')
+WHERE name='Piotr' AND surname='Nowak';
+SELECT * FROM teachers_list WHERE name='Jan' AND surname='Kowalski';
+SELECT * FROM students_list WHERE class='5F';
+SELECT * FROM lessons_list WHERE class='5F';
+```
+![Wynik kwerendy tworzących dane do testu](./images/test_2_0.png)
+
+1. Usunięcie klasy
+```sql
+DELETE FROM classes WHERE number=5 AND letter='F';
+SELECT * FROM classes;
+SELECT * FROM lessons_list WHERE class='5F';
+SELECT L.topic
+FROM lessons L
+   INNER JOIN time_table TT ON TT.ttid=L.ttid
+   INNER JOIN classes C ON C.cid=TT.cid
+WHERE number=5 AND letter='F';
+```
+Po usunięciu klasy usunięte zostały zajęcia i lekcje klasy.
+![Wynik kwerendy z punktu 1](./images/test_2_1.png)
+
+2. Usunięcie nauczyciela
+```sql
+DELETE FROM users
+WHERE name='Jan' AND surname='Kowalski';
+SELECT *
+FROM users
+WHERE name='Jan' AND surname='Kowalski';
+SELECT *
+FROM lessons_list
+WHERE class='5F';
+```
+Po usunięciu nauczyciela w tabeli *users* identyfikator nauczyciela prowadzącego zajęcia został zmieniony na **NULL**.
+![Wynik kwerendy z punktu 2](./images/test_2_2.png)
+
+3. Usunięcie przedmiotu
+```sql
+DELETE FROM subjects
+WHERE sbid=1;
+SELECT *
+FROM classes;
+SELECT *
+FROM lessons_list WHERE class='5F';
+SELECT L.topic
+FROM lessons L
+   INNER JOIN time_table TT ON TT.ttid=L.ttid
+   INNER JOIN classes C ON C.cid=TT.cid
+WHERE number=5 AND letter='F';
+```
+
+Po usunięciu przedmiotu zajęcia i lekcje zostały usunięte z planu zajęć.
+![Wynik kwerendy z punktu 3](./images/test_2_3.png)

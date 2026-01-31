@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS time_table (
     start_time time  NOT NULL,
     end_time time  NOT NULL,
     cid int  NOT NULL,
-    tid int  NOT NULL,
+    tid int  NULL,
     sbid int  NOT NULL,
     canceled boolean  NOT NULL DEFAULT false,
     moved boolean  NOT NULL DEFAULT false,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS attendance (
 CREATE TABLE IF NOT EXISTS grades (
     gid serial  NOT NULL,
     sid int  NOT NULL,
-    tid int  NOT NULL,
+    tid int  NULL,
     sbid int  NOT NULL,
     grade varchar(10)  NOT NULL CHECK (grade IN ('ndst', 'dop', 'dst', 'db', 'bdb', 'cel', 'np', 'nb', 'o')),
     title varchar(200)  NOT NULL,

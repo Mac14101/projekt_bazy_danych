@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS time_table (
     start_time time  NOT NULL,
     end_time time  NOT NULL,
     cid int  NOT NULL,
-    tid int  NOT NULL,
+    tid int  NULL,
     sbid int  NOT NULL,
     canceled boolean  NOT NULL DEFAULT false,
     moved boolean  NOT NULL DEFAULT false,
@@ -179,7 +179,6 @@ ALTER TABLE attendance ADD CONSTRAINT attendance_students
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
-
 
 -- Tabela ocen
 ALTER TABLE grades ADD CONSTRAINT grades_students
