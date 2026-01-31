@@ -1,1 +1,2 @@
+-- Dodawanie sprawdzianu
 INSERT INTO tests (ttid, title, description) VALUES (:ttid, :title, :description);

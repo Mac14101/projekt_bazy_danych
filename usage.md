@@ -214,7 +214,7 @@
          * **absent**
          * **late**
 
-10. Zmiana statusu obecności ucznia
+10. Zmiana oceny i opisu oceny
    Kwerenda SQL :
    ```sql
    UPDATE grades SET grade=:grade, description=:description WHERE gid=:gid;

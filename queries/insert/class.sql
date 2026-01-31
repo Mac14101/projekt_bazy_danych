@@ -1,1 +1,2 @@
+-- Dodawanie klasy
 INSERT INTO classes (number, letter) VALUES (:number, :letter);

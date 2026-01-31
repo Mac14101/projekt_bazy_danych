@@ -1,1 +1,2 @@
+-- Dodawanie zajęć do planu zajęć
 INSERT INTO time_table (date, start_time, end_time, cid, tid, sbid) VALUES (:date, :start_time, :end_time, :cid, :tid, :sbid);

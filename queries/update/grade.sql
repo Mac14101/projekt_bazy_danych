@@ -1,1 +1,2 @@
+-- Zmiana oceny i opisu oceny
 UPDATE grades SET grade=:grade, description=:description WHERE gid=:gid;
