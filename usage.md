@@ -346,6 +346,97 @@
    WHERE class IS NULL;
    ```
 
+9. Lista uczniów nie należących do każdej klasy
+   Kwerenda SQL :
+   ```sql
+   SELECT 
+      s.name AS subject_name, 
+      g.grade, 
+      g.title AS grade_title, 
+      g.date AS grade_date, 
+      u_teacher.surname AS teacher_surname
+   FROM grades g
+   JOIN subjects s ON g.sbid = s.sbid
+   JOIN users u_teacher ON g.tid = u_teacher.uid
+   WHERE g.sid = :student_id
+   ORDER BY g.date DESC;
+   ```
+
+   Parametry :
+      * `student_id` - identyfikator ucznia, którego oceny należy pobrać
+
+10. Sprawdziany dla konkretnej klasy, uwzględniając datę z planu zajęć i nazwę przedmiotu
+   Kwerenda SQL :
+   ```sql
+   SELECT 
+      t.title AS test_title, 
+      t.description, 
+      tt.date AS test_date, 
+      s.name AS subject_name
+   FROM tests t
+   JOIN time_table tt ON t.ttid = tt.ttid
+   JOIN subjects s ON tt.sbid = s.sbid
+   WHERE tt.cid = :cid
+   ORDER BY tt.date ASC;
+   ```
+
+   Parametry :
+      * `cid` - identyfikator klasy, której sprawdziany należy pobrać
+
+11. Zadania domowe dla konkretnej klasy z informacją, kto je zadał i z jakiego są przedmiotu
+   Kwerenda SQL :
+   ```sql
+   SELECT 
+      h.title, 
+      h.description, 
+      h.date AS assigned_date, 
+      s.name AS subject_name, 
+      u.surname AS teacher_surname
+   FROM homework h
+   JOIN subjects s ON h.sbid = s.sbid
+   JOIN users u ON h.tid = u.uid
+   WHERE h.cid = :cid
+   ORDER BY h.date DESC;
+   ```
+
+   Parametry :
+      * `cid` - identyfikator klasy, której zadania domowe należy pobrać
+
+12. Lista obecności na konkretnej lekcji (dla nauczyciela)
+   Kwerenda SQL :
+   ```sql
+   SELECT 
+      u.name, 
+      u.surname, 
+      a.status
+   FROM attendance a
+   JOIN users u ON a.sid = u.uid
+   WHERE a.lid = :lid
+   ORDER BY u.surname ASC;
+   ```
+
+   Parametry :
+      * `lid` - identyfikator lekcji, której listę obecności należy pobrać
+
+13. Wszystkie nieobecności i spóźnienia danego ucznia
+   Kwerenda SQL :
+   ```sql
+   SELECT 
+      tt.date, 
+      s.name AS subject_name, 
+      l.topic, 
+      a.status
+   FROM attendance a
+   JOIN lessons l ON a.lid = l.lid
+   JOIN time_table tt ON l.ttid = tt.ttid
+   JOIN subjects s ON tt.sbid = s.sbid
+   WHERE a.sid = :student_id AND a.status IN ('absent', 'late')
+   ORDER BY tt.date DESC;
+   ```
+
+   Parametry :
+      * `student_id` - identyfikator ucznia, którego oceny należy pobrać
+
 ## Usuwanie danych
 
 1. Usuwanie konta użytkownika
