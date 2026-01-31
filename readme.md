@@ -8,8 +8,13 @@
 
 Celem projektu jest stworzenie systemu bazy danych dla aplikacji e-dziennik. Baza danych zajmuje się przechowywaniem danych o użytkownikach, klasach, przedmiotach szkolnych, planie zajęć, lekcjach, obecnościach uczniów na lekcjach, ocenach uczniów, sprawdzianach, zadaniach domowych oraz wiadomościach wysyłanych przy użyciu aplikacji. Spójność danych jest gwarantowana poprzez odpowiednie ograniczenia kolumn w tabelach, triggery sprawdzające spójność przy dodawaniu i aktualizowaniu danych, a także odpowiednim relacją między tabelami. 
 
+Plik ***initilize.sql*** zawiera kwerendy niezbędne do poprawnego utworzenia struktury bazy danych.
+[Plik initialize.sql](./initialize.sql)
+Plik ***data.sql*** w katalogu ***/data/*** zawiera kwerendy służące do uzupełnienia bazy przykładowymi danymi.
+[Plik data.sql](./data/data.sql)
 
 [Dokumentacja użytkowa.](./usage.md)
+[Testy działania systemu.](./test.md)
 
 ### Diagram ERD
 

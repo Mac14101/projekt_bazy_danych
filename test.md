@@ -1,3 +1,6 @@
+# Testy
+Poniżej przedstawiono dwa scenariusze testowe sprawdzające działanie mechanizmów bazy danych. Przed ich wykonaniem należy utworzyć strukturę bazy za pomocą pliku [initialize.sql](./initialize.sql) oraz zaimportować przykładowe dane z pliku [data.sql](./data/data.sql).
+
 ## Próba utrzymania spójności danych w bazie podczas dodawania nieprawidłowych danych oraz sprawdzenie automatycznego dodawania obecności
 
 Scenariusz :
@@ -51,9 +54,10 @@ WHERE L.topic='TESTOWA LEKCJA';
 ```
 ![Wynik kwerendy z punktu 6](./images/test_1_6.png)
 
+
 ## Próba utrzymania spójności danych podczas usuwania danych
 
-Aby poprawnie wykonać test należy przed każdym punktem upewnić się że w tabelach znajdują się dane dodane za pomocą poniższej kwerendy.
+Aby poprawnie wykonać test należy przed każdym punktem upewnić się, że w tabelach znajdują się dane dodane za pomocą poniższej kwerendy, w tym celu można przed każdym punktem scenariusza usunąć dane, a następnie utworzyć ją na nowo z plików [initialize.sql](./initialize.sql) i [data.sql](./data/data.sql) oraz wykonać poniższą kwerendę.
 
 Utworzenie danych
 ```sql
