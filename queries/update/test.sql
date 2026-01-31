@@ -1,0 +1,1 @@
+UPDATE tests SET ttid=:ttid WHERE tsid=:tsid;

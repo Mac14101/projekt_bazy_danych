@@ -1,0 +1,1 @@
+UPDATE users SET email=:email WHERE uid=:uid;

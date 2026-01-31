@@ -115,6 +115,145 @@ INSERT INTO homework (cid, tid, sbid, title, description) VALUES (:cid, :tid, :s
 
 ## Aktualizacja danych
 
+1. Zmiana adresu e-mail użytkownika
+Kwerenda SQL :
+```sql
+UPDATE users SET email=:email WHERE uid=:uid;
+```
+
+Parametry :
+   * `uid` - identyfikator użytkownika, którego dotyczy zmiana
+   * `email` - nowy adres e-mail użytkownika
+
+2. Zmiana hasła użytkownika
+Kwerenda SQL :
+```sql
+UPDATE users SET password=:password WHERE uid=:uid;
+```
+
+Parametry :
+   * `uid` - identyfikator użytkownika, którego dotyczy zmiana
+   * `password` - nowe hasło użytkownika
+
+3. Zmiana klasy ucznia
+Kwerenda SQL :
+```sql
+UPDATE users SET cid=:cid WHERE uid=:sid;
+```
+
+Parametry :
+   * `sid` - identyfikator użytkownika, którego dotyczy zmiana
+   * `cid` - identyfikator klasy, do której przepisany zostaje uczeń
+
+4. Zmiana nazwy klasy
+Kwerenda SQL :
+```sql
+UPDATE classes SET number=:number, letter=:letter WHERE cid=:cid;
+```
+
+Parametry :
+   * `cid` - identyfikator klasy, której dotyczy zmiana
+   * `number` - nowa cyfra przypisana do klasy
+   * `letter` - nowa litera przypisana do klasy
+
+5. Zmiana nauczyciela prowadzącego zajęcia
+Kwerenda SQL :
+```sql
+UPDATE time_table SET tid=:tid WHERE ttid=:ttid;
+```
+
+Parametry :
+   * `ttid` - identyfikator zajęć, których dotyczy zmiana
+   * `tid` - identyfikator nauczyciela przydzielonego w zastępstwo
+
+6. Przeniesienie zajęć na inny dzień/godzinę
+Kwerenda SQL :
+```sql
+UPDATE time_table SET date=:date, start_time=:start_time, end_time=:end_time, moved=true WHERE ttid=:ttid;
+```
+
+Parametry :
+   * `ttid` - identyfikator zajęć, których dotyczy zmiana
+   * `date` - dzień, na który zajęcia zostają przeniesione
+   * `start_time` - nowa godzina rozpoczęcia zajęć
+   * `end_time` - nowy czas zakończenia zajęć
+
+7. Odwołanie zajęć
+Kwerenda SQL :
+```sql
+UPDATE time_table SET canceled=true WHERE ttid=:ttid;
+```
+
+Parametry :
+   * `ttid` - identyfikator zajęć, których dotyczy zmiana
+
+8. Zmiana tematu i opisu lekcji
+Kwerenda SQL :
+```sql
+UPDATE lessons SET title=:title, description=:description WHERE lid=:lid;
+```
+
+Parametry :
+   * `lid` - identyfikator lekcji, której dotyczy zmiana
+   * `title` - nowy tytuł lekcji
+   * `description` - nowy opis lekcji
+
+9. Zmiana statusu obecności ucznia
+Kwerenda SQL :
+```sql
+UPDATE attendance SET status=:status WHERE lid=:lid AND sid=:sid;
+```
+
+Parametry :
+   * `lid` - identyfikator lekcji, której dotyczy zmiana
+   * `sid` - identyfikator ucznia, którego dotyczy zmiana obecności
+   * `status` - status obecności :
+      * **undefined**
+      * **present**
+      * **absent**
+      * **late**
+
+10. Zmiana statusu obecności ucznia
+Kwerenda SQL :
+```sql
+UPDATE grades SET grade=:grade, description=:description WHERE gid=:gid;
+```
+
+Parametry :
+   * `gid` - identyfikator oceny, której dotyczy zmiana
+   * `grade` - nowa ocena :
+      * ndst (1)
+      * dop (2)
+      * dst (3)
+      * db (4)
+      * bdb (5)
+      * cel (6)
+      * np (nie przygotowany)
+      * nb (brak oceny np. nieobecny na sprawdzianie)
+      * o (inne)
+   * `description` - nowy opis oceny
+
+11. Zmiana przypisania sprawdzianu do zajęć
+Kwerenda SQL :
+```sql
+UPDATE tests SET ttid=:ttid WHERE tsid=:tsid;
+```
+
+Parametry :
+   * `tsid` - identyfikator sprawdzianu, którego dotyczy zmiana
+   * `ttid` - identyfikator zajęć, na które sprawdzian zostaje przeniesiony
+
+
+12. Zmiana terminu oddania zadania domowego
+Kwerenda SQL :
+```sql
+UPDATE homework SET date=:date WHERE hid=:hid;
+```
+
+Parametry :
+   * `hid` - identyfikator zadania domowego, którego dotyczy zmiana
+   * `date` - nowa data zwrotu zadania domowego
+
 ## Pobieranie danych
 
 1. Uczniowie z wybranej klasy

@@ -1,0 +1,1 @@
+UPDATE homework SET date=:date WHERE hid=:hid;

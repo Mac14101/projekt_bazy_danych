@@ -1,0 +1,1 @@
+UPDATE time_table SET tid=:tid WHERE ttid=:ttid;
