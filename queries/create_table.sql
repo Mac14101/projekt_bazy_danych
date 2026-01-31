@@ -94,7 +94,7 @@ CREATE TABLE homework (
     sbid int  NOT NULL,
     title varchar(200)  NOT NULL,
     description text  NULL,
-    date date  NOT NULL DEFAULT NOW(),
+    date date  NOT NULL DEFAULT NOW() + INTERVAL '7 days',
     CONSTRAINT homework_pk PRIMARY KEY (hid)
 );
 

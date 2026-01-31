@@ -207,7 +207,7 @@ Dodatkowe informacje :
     * `title`
 * Wartości domyślne : 
     * `description` - domyślnie **NULL**
-    * `date` - domyślnie **NOW()**
+    * `date` - domyślnie **NOW() + INTERVAL '7 days'**
 * Ograniczenia : 
     * `grade` - wartość z listy ocen : 
         * ndst (1)
