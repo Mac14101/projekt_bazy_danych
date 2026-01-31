@@ -1,0 +1,1 @@
+DELETE FROM grades WHERE gid=:gid;

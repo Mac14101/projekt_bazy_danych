@@ -2,7 +2,8 @@
 
 1. [Wstawianie danych](#wstawianie-danych)
 2. [Aktualizowanie danych](#aktualizowanie-danych)
-2. [Pobieranie danych](#pobieranie-danych)
+3. [Pobieranie danych](#pobieranie-danych)
+4. [Usuwanie danych](#usuwanie-danych)
 
 ## Wstawianie danych
 
@@ -344,3 +345,50 @@
    FROM students_list
    WHERE class IS NULL;
    ```
+
+## Usuwanie danych
+
+1. Usuwanie konta użytkownika
+   Kwerenda SQL:
+   ```sql
+   DELETE FROM users WHERE uid=:uid;
+   ```
+
+   Parametry :
+      * `uid` - identyfikator użytkownika, który ma zostać usunięty
+
+2. Usuwanie klasy
+   Kwerenda SQL:
+   ```sql
+   DELETE FROM classes WHERE cid=:cid;
+   ```
+
+   Parametry :
+      * `cid` - identyfikator klasy, która ma zostać usuniętą
+
+3. Usuwanie oceny
+   Kwerenda SQL:
+   ```sql
+   DELETE FROM grades WHERE gid=:gid;
+   ```
+
+   Parametry :
+      * `gid` - identyfikator oceny, która ma zostać usuniętą
+
+4. Usuwanie sprawdzianu
+   Kwerenda SQL:
+   ```sql
+   DELETE FROM tests WHERE tsid=:tsid;
+   ```
+
+   Parametry :
+      * `tsid` - identyfikator sprawdzianu, który ma zostać usunięty
+
+5. Usuwanie zadania domowego
+   Kwerenda SQL:
+   ```sql
+   DELETE FROM tests WHERE hid=:hid;
+   ```
+
+   Parametry :
+      * `hid` - identyfikator zadania domowego, które ma zostać usunięte
