@@ -6,23 +6,14 @@
 
 # System e-dziennik
 
-Celem projektu jest utworzenie systemu bazy danych **PostreSQL** dla aplikacji e-dziennika. Baza danych przechowuje :
-* konta użytkowników korzystających z systemu
-* listę klas w szkole
-* listę uczniów (przypisanie uczniów do klas)
-* listę przedmiotów
-* tygodniowy plan zajęć klas
-* rozpiska lekcji klas do końca roku szkolnego
-* listy obecności uczniów na zajęciach
-* listę ocen uczniów
-* terminy sprawdzianów
+Celem projektu jest stworzenie systemu bazy danych dla aplikacji e-dziennik. Baza danych zajmuje się przechowywaniem danych o użytkownikach, klasach, przedmiotach szkolnych, planie zajęć, lekcjach, obecnościach uczniów na lekcjach, ocenach uczniów, sprawdzianach, zadaniach domowych oraz wiadomościach wysyłanych przy użyciu aplikacji. Spójność danych jest gwarantowana poprzez odpowiednie ograniczenia kolumn w tabelach, triggery sprawdzające spójność przy dodawaniu i aktualizowaniu danych, a także odpowiednim relacją między tabelami. 
 
 [Dokumentacja użytkowa.](./usage.md)
 
 ## Tabele
 
 1. Użytkownicy(users)
-    Tabela przechowująca konta użytkowników aplikacji. Zawiera dane używane do uwierzytelniania, podczas używania aplikacji, oraz dane personalne użytkownika.
+    Tabela *users* przechowuje użytkowników. Każdy rekord tabeli zawiera dane personalne użytkownika oraz używane aby uwierzytelnić użytkownika, jak również rolę użytkownika (uczeń, nauczyciel, administrator) i przypisanie do klasy, jeżeli użytkownik posiada rolę **student**. Aby zapewnić spójność przypisania uczniów do klas użyto mechanizmu aktualizacji kolumny `cid` przy zmianie `cid` w tabeli *classes* oraz ustawieniu wartości `cid` na **NULL**, gdy klasa do której przypisany został użytkownik zostanie usunięta.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -55,7 +46,7 @@ Dodatkowe informacje :
     * `cid` - domyślnie **NULL**
 
 2. Klasy(classes)
-    Tabela przechowująca listę klas. Może istnieć maksymalnie jedna klasa o wybranym numerze i literze (np. 1A).
+    Tabela *classes* przechowuje listę klas.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -74,7 +65,7 @@ Dodatkowe informacje :
     * (`number`, `letter`) - wartość unikalna
 
 3. Przedmioty(subjects)
-   Tabela przechowująca listę przedmiotów.
+   Tabela *subjects* przechowuje listę przedmiotów.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -89,7 +80,7 @@ Dodatkowe informacje :
     * `name` - unikalna wartość
 
 4. Plan zajęć(time_table)
-    Tabela przechowująca zajęcia z planu zajęć. Rekord odpowiada jednym zajęciom odbywającym się w zadanym dniu i godzinie. Zajęcia mogą być przenoszone między godzinami lub odwoływane.
+    Tabela *time_table* przechowuje zajęcia z planu zajęć. Do każdych zajęć jest przypisany identyfikator, dzień, w którym te zajęcia się odbywają, godzina rozpoczęcia i zakończenia zajęć. Nauczyciel prowadzący zajęcia jest zdefiniowany poprzez identyfikator `tid`, natomiast klasa, której dotyczą zajęcia, jest przypisana dzięki kolumnie `cid`, a przedmiot szkolny przypisano poprzez `sbid`. Każde zajęcia posiadają dwie flagi `canceled` oraz `moved`, które definiują czy zajęcia są odwołane, albo zostały przesunięte względem oryginalnego planu. Kolumna `cid` jest automatycznie aktualizowana po zmianie `cid` w tabeli *classes*, `sbid` aktualizuje się po zmianie `sbid` w tabeli *subjects*, a `tid` po zmianie `uid` w tabeli *users*. Jeżeli klasa, która jest przypisana do zajęć, zostanie usunięta zajęcia również zostana usunięte z planu zajęć, dla przedmiotu szkolnego mechanizm zachowywania spójności przy usuwaniu przedmiotu działa tak samo, natomiast w przypadku usunięcia nauczyciela, który prowadzi zajęcia, kolumna `tid` zostaje ustawiona na **NULL** co pozwala na przypisanie innego nauczyciela do zajęć bez konieczności dodawania ich od nowa.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -127,7 +118,7 @@ Dodatkowe informacje :
     * *time_table_update_trigger* - trigger wywoływany podczas aktualizacji rekordu z tabeli, sprawdza czy klasa o podanym numerze id ma zaplanowane zajęcia w podanym czasie, oraz czy użytkownik o podanym identyfikatorze ma rolę **teacher**
 
 5. Lekcje(lessons)
-    Tabela zawiera lekcje, które zostały przeprowadzone przez nauczycieli. Lekcja jest przypisana do zajęć z planu zajęć.
+    Tabela *lessons* zawiera lekcje, które zostały przeprowadzone przez nauczycieli. Przy dodawaniu nowej lekcji wymagane jest podanie tematu zajęć, ale dodanie opisu lekcji nie jest obowiązkowe. Każda lekcja jest przypisana do odpowiednich zajęć poprzez `ttid`. Jeżeli `ttid` w tabeli *time_table* zostanie zaktualizowany identyfikator zajęć w tabeli *lessons* również zostanie zaktualizowany aby zachować spójność danych. Jeżeli zajęcia, do których przypisana jest lekcja, zostaną usunięte, lekcja również zostanie usunięta.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -154,7 +145,7 @@ Dodatkowe informacje :
     * *lesson_insert_attendance* - trigger wywoływany przy dodawaniu rekordu do tabeli, dodaje rekordy do tabeli attendance ze statusem **undefined** dla wszystkich uczniów których dotyczy lekcja
 
 6. Obecność(attendance)
-    Tabela zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (**undefined**).
+    Tabela *attendance* zawiera listę obecności uczniów na lekcji. Obecność dla uczniów jest dodawana automatycznie po utworzeniu lekcji dla wszystkich uczniów z klasy, status ustawiany jest jako niezdefiniowany (**undefined**). Aby zachować spójność danych kolumna `lid` zostaje automatycznie zaktualizowana, po aktualizacji kolumny `lid` w tabeli *lessons*. Po usunięciu lekcji z tabeli *lessons* wszystkie rekordy z `lid` usuniętej lekcji również zostają usunięte. Zmiana `uid` ucznia, którego obecność jest zapisana w tabeli jest aktualizowana automatycznie, natomiast usunięcie ucznia z tabeli *users* powoduje usunięcie wszystkich rekordów z `sid` równym `uid` usuniętego ucznia.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -179,7 +170,7 @@ Dodatkowe informacje :
 
 
 7. Oceny(grades)
-    Tabela zawiera listę ocen uczniów.
+    Tabela *grades* zawiera listę ocen uczniów. Rekord tabeli zawiera identyfikator ucznia, który otrzymał ocenę, identyfikator nauczyciela wystawiającego ocenę, identyfikator przedmiotu, którego dotyczy ocena, ocenę zapisaną jako ciąg znaków, tytuł i opis oceny, oraz datę wystawienia oceny. Kolumny `sid`, `tid`, `sbid` są aktualizowane automatycznie, gdy wystąpią zmiany w identyfikatorach zapisanych w innych tabelach. W przypadku usunięcia ucznia, do którego przypisana jest ocena, lub usunięcia przedmiotu, z którego ocena została wystawiona, rekord zostaje usunięty. Jeżeli usunięty został nauczyciel, który wystawił ocenę, `tid` zostaje ustawione na wartość **NULL**.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -226,7 +217,7 @@ Dodatkowe informacje :
     * *grades_table_update_trigger* - - trigger wywoływany podczas aktualizacji rekordu z tabeli, sprawdza czy uczeń o podanym id faktycznie posiada rolę **student**, oraz czy nauczyciel o podanym id faktycznie posiada rolę **teacher**
 
 8. Sprawdziany(tests)
-    Tabela zawierając listę sprawdzianów.
+    Tabela *tests* zawiera listę sprawdzianów. Sprawdzian jest przypisany do zajęć w planie zajęć, oraz musi posiadać tytuł, opis sprawdzianu nie jest wymagany. Przy aktualizacji `ttid` w tabeli *time_table* kolumna `ttid` zostaje zaktualizowana automatycznie, jeżeli zajęcia zostana usunięte sprawdzian również zostaje usunięty.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -246,7 +237,7 @@ Dodatkowe informacje :
     * `description` - domyślnie **NULL**
 
 9. Zadanie domowe(homework)
-    Tabela zawierająca listę zadań domowych.
+    Tabela *homework* zawiera listę zadań domowych. Zadanie domowe jest przypisane przez nauczyciela do wybranego przedmiotu oraz klasy poprzez odpowiednie indentyfikatory. Każde zadanie domowe musi zawierać tytuł i datę zwrotu zadania, opis nie jest wymagany. Przy zmianie identyfikatoru nauczyciela, klasy lub przedmiotu w odpowiedniej tabeli identyfikatory zostają zaktualizowane automatycznie. Usunięcie nauczyciela, klasy lub przedmiotu powoduje usunięcie wszystkich powiązanych zadań domowych.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
@@ -274,7 +265,7 @@ Dodatkowe informacje :
     * `date` - domyślnie **NOW()**
 
 10. Wiadomości(messages)
-    Tabela zawierająca wiadomości wysyłane przez użytkowników. Wiadomość może być odpowiedzią do innej wiadomości poprzez ustawienie pola `pmid`.
+    Tabela *messages* zawiera wiadomości wysyłane przez użytkowników. Nadawca i odbiorca wiadomości jest identyfikowany na podstawie wartości `snid` i `rcid`. Każda wiadomość musi zawierać tytuł i zawartość. Wiadomość może być odpowiedzią do innej wiadomości poprzez ustawienie pola `pmid`. Aktualizacja wartości `uid` powiązanej z `snid` lub `rcid` powoduje automatyczną aktualizację wartości, usunięcie użytkownika ustawia odpowiedni identyfikator na wartość **NULL**. Zmiana `mid` powiązanego z `pmid` innej wiadomości powoduje zmianę `pmid` w wszystkich powiązanych wiadomościach, natomiast usunięcie powiązanej wiadomości powoduje ustawienie `pmid` na wartość **NULL**.
 
 | Nazwa kolumny | Typ | Długość | Opis |
 |-|-|-|-|
